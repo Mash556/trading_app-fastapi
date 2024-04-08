@@ -13,11 +13,12 @@ copy requirements.txt .
 run pip install -r requirements.txt
 
 # копируем все папки и файлы в наш текущую рабочую деректорию
+
 COPY . .
+ENTRYPOINT ["docker/entrypoint.sh"]
 
 RUN chmod a+x docker/*.sh
 
-RUN alembic upgrade head
 
 # переходим в папочку src чтобы запустить проект
 WORKDIR src

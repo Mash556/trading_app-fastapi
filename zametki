@@ -1,0 +1,41 @@
+# uvicorn запускает наш сервер
+# uvicorn {название файла в котором есть экземпляр класса FastAPI}:{название экземпляра класса FastAPI} --reload (это не обьязятельный параметр но он отвечает за перезапуск приложение при изменении кода)
+uvicorn main:app --reload
+
+
+# создает ревизию тоесть работает как add и сразу коммит типо как makemigrations
+alembic revision --autogenerate -m "InitiaL"
+
+
+# приминяет миграции все до последнего типо как migrate
+alembic upgrade head
+
+# приминяет миграцию по его id
+alembic upgrade {id последней миграции}
+
+# run celery worker
+# celery -A {название файла в котором есть экземпляр класса Celery}:{название экземпляра класса Celery} worker --loglevel=INFO
+celery -A tasks.tasks:celery worker --loglevel=INFO
+
+# run flower
+celery -A tasks.tasks:celery flower
+
+# redis
+redis - это по сравнение с питоном как словари много уникальных ключей много значении,
+но redis это база данных  которого обычно используют для хеширование и автоматизации  (имеется скорость улучшить)
+
+# pytest
+изучить еще
+
+# cors middleweare
+это набор http заголовков которые позволяют общаться сайтом друг с другом
+для взаимодействие с фронтом нужно изучить
+
+# https://cdn.tailwindcss.com
+это мощный фреймворк для работы в html с css изучить
+
+# собирает образы скачивает нужные библиотеки но не запускает проект
+docker build . -t fastapi_app:latest
+
+# запуск самого проекта
+docker run -p 7329:8000 fastapi_app

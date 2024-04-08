@@ -1,0 +1,64 @@
+# версия самого docker-comose
+version: "3.7"
+
+
+services: 
+  db:
+  # образ - image
+    image: postgres
+    container_name: db_app
+    command: -p 5435
+    expose:
+      - 5435
+    env_file:
+      - .env-non-dev
+
+  redis:
+    image: redis
+    container_name: redis_app
+    command: --port 5370
+    expose:
+      - 5370
+
+# наше приложение
+  app:
+    build:
+    # указывает местоположение Dockerfile
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: fastapi_app
+    command: ["/fastapi_app/docker/app.sh"]
+    ports: 
+      - 9999:8000
+    # указыфается от каких контейнеров он зависит, теперь он будет запущет после того как запустятся db redis
+    depends_on:
+      - db
+      - redis
+
+
+  celery:
+    build:
+    # указывает местоположение Dockerfile
+      context: .
+    container_name: celery_app
+    env_file:
+      - .env-non-dev
+    command: ["/fastapi_app/docker/celery.sh", "celery"]
+    depends_on:
+      - redis
+
+
+  flower:
+    build:
+    # указывает местоположение Dockerfile
+      context: .
+    container_name: celery_app
+    env_file:
+      - .env-non-dev
+    command: ["/fastapi_app/docker/celery.sh", "flower"]
+    depends_on:
+      - redis
+      - celery
+    ports:
+      - 8888:5555

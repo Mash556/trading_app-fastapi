@@ -13,7 +13,7 @@ from pages.router import router as pages_router
 from chat.router import router as chat_router
 
 from fastapi.staticfiles import StaticFiles
-from .config import REDIS_HOST, REDIS_PORT
+from config import REDIS_HOST, REDIS_PORT
 
 
 app = FastAPI(

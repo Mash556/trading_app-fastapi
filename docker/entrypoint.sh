@@ -1,4 +1,5 @@
-#! /bin/sh
+#!/bin/bash
+
 alembic init alembic
-alembic upgrade HEAD
+alembic upgrade head
 exec "$@"
